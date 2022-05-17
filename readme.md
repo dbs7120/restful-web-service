@@ -6,24 +6,24 @@
 + 스프링 부트 설정 파일
   + properties
     + 단일라인 구성 (name=value)
-    + <pre>
+    + ```properties
        example.jdbc.url=127.0.0.1 
        example.jdbc.port=3306 
        example.jdbc.user=user 
        example.jdbc.password=password 
-      </pre>
+      ```
     
   + yml
      + 계층적 구조 형태
      + 들여쓰기로 계층 구조 
-     + <pre>
+     + ```yaml
         example: 
          jdbc: 
           url: 127.0.0.1 
           port: 3306 
           user: user 
           password: password
-       </pre>
+       ```
 
 <hr />
 
@@ -49,3 +49,40 @@ DispatcherServlet
 RestController
 - Spring4 부터 @RestController 지원
 - View 를 갖지 않는 REST Data(JSON/XML) 를 반환
+
+
+<hr />
+
+ServletUriComponentsBuilder
++ 특정 값을 포함한 URI를 전달 해야 할 때 사용
++ 사용자가 요청한 URI를 가져온 다음 path를 통해 원하는 정보를 입력
++ buildAndExpand에 원하느 값을 넣어주면 path({변수})에 추가되어 UIR가 구성
++ ResponseEntity를 통해 사용자에게 전달
+```java
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User savedUser = service.save(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedUser.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+```
+![img.png](readmeImg/img_6.png)
+
+<hr />
+
+AOP를 활용한 예외 처리(@ControllerAdvice)
+```JAVA
+@ControllerAdvice // 모든 컨트롤러가 실행될때 반드시 Advice 가지는 Bean 을 찾아내서 실행하게 됨 -> 전역에서 발생하는 예외를 잡아 처리 할 수 있음 ,AOP(관점지향프로그래밍) 활용
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+```
