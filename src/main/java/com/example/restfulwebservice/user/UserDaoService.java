@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 // Service: 비즈니스 로직
@@ -42,5 +43,28 @@ public class UserDaoService {
             }
         }
         return null;
+    }
+
+    public User deleteById(int id) {
+        Iterator<User> iterator = users.iterator(); // 열거형(Iterator) Data, 순차탐색용
+
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            if (user.getId() == id) { // if found data
+                iterator.remove();
+                return user;
+            }
+        }
+
+        return null; // if not found data
+    }
+
+    public User updateUser(User user, int id) {
+        User check = this.findOne(id);
+        if (check == null)
+            return null;
+        check.setName(user.getName());
+
+        return check;
     }
 }

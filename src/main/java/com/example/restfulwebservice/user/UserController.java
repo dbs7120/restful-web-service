@@ -45,4 +45,22 @@ public class UserController {
         // return HTTP Status Code 201 Created
         return ResponseEntity.created(location).build();
     }
+
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        User user = service.deleteById(id);
+        if (user == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+    }
+
+    @PutMapping("/users/{id}")
+    public void updateUser(@RequestBody User user, @PathVariable int id){
+        User updateData = service.updateUser(user, id);
+        if(updateData == null) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", user.getId()));
+        }
+    }
+
 }
