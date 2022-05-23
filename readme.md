@@ -86,3 +86,91 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 }
 
 ```
+
+<hr />
+
+Validation API 사용
++ Spring 2.3 이후 starter web에 validation이 빠져있으므로 pom.xml 추가필요
+```xml
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+사용자 측 입력 유효성 오류이므로 400번 Error Code 전송함
+![img.png](readmeImg/img_7.png)
+
+<details> 
+<summary>상세목록 접기/펼치기</summary>
+
+| 1 | 2  | 3 | 4 |
+|---|----|-----|----|
+| @AssertTrue | Boolean, boolean | 값이 항상 True 여야 한다 ||
+| @DecimalMax | 실수 제외 숫자 클래스 | 지정된 최대 값보다 작거나 같아야 하는 숫자이다 | String : value (max 값을 지정한다) |
+| @DecimalMin | 실수 제외 숫자 클래스 | 지정된 최소 값보다 크거나 같아야하는 숫자이다 | String : value (min 값을 지정한다) |
+| @Digits | BigDecimalBigIntegerCharSequencebyte, short, int, long, 이에 대응하는 Wrapper 클래스 | 허용된 범위 내의 숫자이다 | int : integer (이 숫자에 허용되는 최대 정수 자릿수) <br/> int : fraction (이 숫자에 허용되는 최대 소수 자릿수) |
+| @Email | null도 valid로 간주된다 | 올바른 형식의 이메일 주소여야한다 ||
+| @Future | 시간 클래스 | Now 보다 미래의 날짜, 시간 ||
+| @FutureOrPresent | 시간 클래스 | Now 보다 미래의 시간이거나 미래의 날짜, 시간 ||
+| @Past | 시간 클래스 | Now 보다 과거의 날짜, 시간 ||
+| @PastOrPresent | 시간 클래스 | Now 보다 과거의 시간이거나 미래의 날짜, 시간 ||
+| @Max | 실수 제외 숫자 클래스 | 지정된 최대 값보다 작거나 같은 숫자이다 | long : value (max 값을 지정한다) |
+| @Min | 실수 제외 숫자 클래스 | 지정된 최소 값보다 크거나 같은 숫자이다 | long : value (min 값을 지정한다) |
+| @Negative | 숫자 클래스 | 음수인 값이다 |
+| @NegativeOrZero | 숫자 클래스 | 0이거나 음수인 값이다 |
+| @Positive | 숫자 클래스 | 양수인 값이다 ||
+| @NPositiveOrZero | 숫자 클래스 | 0이거나 양수인 값이다 ||
+| @NotBlank | null 이 아닌 값이다 | 공백이 아닌 문자를 하나 이상 포함한다 ||
+| @NotEmpty | CharSequence,Collection, Map, Array | null이거나 empty(빈 문자열)가 아니어야 한다 ||
+| @NotNull | 어떤 타입이든 수용한다 | null 이 아닌 값이다 ||
+| @Null | 어떤 타입이든 수용한다 | null 값이다 ||
+| @Pattern | 문자열 | 지정한 정규식과 대응되는 문자열이어야한다 <br/> Java의 Pattern 패키지의 컨벤션을 따른다 | String : regexp (정규식 문자열을 지정한다) |
+| @Size | CharSequence,Collection, Map, Array | 크기가 지정된 경계(포함) 사이에 있어야한다 (ex: @Size(min="2", max="10") ) | int : max (element의 크기가 작거나 같다) <br/> int : min (element의 크기가 크거나 같다) |
+
+</details>
+
+
+<hr/>
+
+다국어 처리를 위한 Internationalization 구현
+
++ Default Locae 설정(Main Controller)
+```JAVA
+@Bean
+public SessionLocaleResolver localResolver() {
+    SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+    localeResolver.setDefaultLocale(Locale.KOREA);
+    return localeResolver;
+    }
+ ```
+
++ 리소스 파일을 통해 언어 설정(properties) 등록 가능, properties 파일 문자인코딩 주의(UTF-8)
++ Controller를 활용한 Locale 문자 처리
+```JAVA
+@Autowired // 어노테이션을 통한 의존성 주입
+private MessageSource messageSource;
+
+@GetMapping(path = "/hello-world-internationalized")
+public String helloWorldInternationalized(@RequestHeader(name = "Accept-Language", required = false) Locale locale) {
+    return messageSource.getMessage("greeting.message", null, locale);
+}
+```
+![img.png](readmeImg/img_8.png)
+
+<hr/>
+
+XML Format 형식 반환
+
++ Dependency 설정하지 않았을때 XML 요청시 아래와 같이 406 Not Acceptable 이 반환됨
+![img.png](readmeImg/img9.png)
+
+Dependency 추가시 정상 반환 가능
+```xml
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+    <version>2.13.3</version>
+</dependency>
+```
+![img.png](readmeImg/img10.png)
