@@ -4,3 +4,7 @@ server:
 logging:
   level:
     org.springframework: DEBUG # Logging Level : DEBUG Mod
+
+spring:
+  messages:
+    basename: messages # 다국어 파일 저장용
