@@ -174,3 +174,52 @@ Dependency 추가시 정상 반환 가능
 </dependency>
 ```
 ![img.png](readmeImg/img10.png)
+
+<hr/>
+Response Filtering
+
++ 필터링 X
+![img.png](readmeImg/img11.png)
+ 
++ 필드값 단위 : @JsonIgnore
+
+```java
+
+@Data
+public class User {
+...
+  @JsonIgnore
+  private String password;
+
+  @JsonIgnore
+  private String ssn;
+}
+```
++ 클래스 블록 단위 : @JsonIgnoreProperties
+```java
+@JsonIgnoreProperties(value = {"password", "ssn"})
+public class User {
+...
+  private String password;
+
+  private String ssn;
+}
+```
+![img.png](readmeImg/img12.png)
+
+<hr/>
+REST API Version Control
+
+```java
+@GetMapping("/v1/users/{id}") // URI 값을 활용한 버전 관리
+@GetMapping(value = "/users/{id}/", params = "version=1") // request parameter를 활용한 버전 관리
+@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1") // request header를 활용한 버전 관리
+@GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json") // produces 를 활용한 방법 (MIME 타입 (Multipurpose Internet Mail Extensions))
+```
+![img.png](readmeImg/img13.png)
+
++ URI 값이 지저분하거나 과도한 정보를 주는지 주의
++ 잘못된 헤더값을 주는지 확인
++ 인터넷 웹브라우저 남은 캐시값을 확인하며 개발(새로운 반영시)
++ 웹브라우저 호환성 확인
++ API 개발 문서 작성

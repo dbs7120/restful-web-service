@@ -16,9 +16,9 @@ public class UserDaoService {
     // static 초기화 블럭
     // static 부르는 상황이오면 자동으로 초기화(클래스 메모리 로드), 단 한번만 호출됨
     static {
-        users.add(new User(1,"Kenneth", new Date()));
-        users.add(new User(2,"Alice", new Date()));
-        users.add(new User(3,"Elena", new Date()));
+        users.add(new User(1,"Kenneth", new Date(), "pass1", "701010-1111111"));
+        users.add(new User(2,"Alice", new Date(), "pass2", "801010-2222222"));
+        users.add(new User(3,"Elena", new Date(), "pass3", "901010-1111111"));
     }
 
     // 전체 사용자 조회
