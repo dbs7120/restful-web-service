@@ -1,11 +1,21 @@
 package com.example.restfulwebservice.user;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo; // static import
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,20 +27,49 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers() {
-        return service.findAll();
+    public ResponseEntity<MappingJacksonValue> retrieveAllUsers() {
+
+        List<EntityModel<User>> result = new ArrayList<>();
+        List<User> users = service.findAll();
+
+        // HATEOAS
+        for (User user : users) {
+            EntityModel entityModel = EntityModel.of(user);
+            entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withSelfRel());
+            result.add(entityModel);
+        }
+
+        // Filter
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter); // UserDto 필터명 @JsonFilter("UserInfo")
+        MappingJacksonValue mapping = new MappingJacksonValue(result);
+        mapping.setFilters(filters);
+
+        return ResponseEntity.ok(mapping);
     }
 
     // GET /users/1 or /users/10 ...  -> HTTP 서버 컨트롤러형태로 넘길때는 문자형태(String)로 넘어감
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable int id) { // 자동 컨버팅 일어남 String -> int
+    public ResponseEntity<MappingJacksonValue> retrieveUser(@PathVariable int id) { // 자동 컨버팅 일어남 String -> int
         User user = service.findOne(id);
 
         if (user == null) {
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
         }
 
-        return user;
+        // HATEOAS
+        EntityModel entityModel = EntityModel.of(user);
+
+        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers()); // linkTo, MethodOn = static import method
+        entityModel.add(linkTo.withRel("all-users")); // hyper-media link
+
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "joinDate");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter); // UserDto 필터명 @JsonFilter("UserInfo")
+        MappingJacksonValue mapping = new MappingJacksonValue(entityModel);
+        mapping.setFilters(filters);
+
+        return ResponseEntity.ok(mapping);
     }
 
     @PostMapping("/users")

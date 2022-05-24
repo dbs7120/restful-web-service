@@ -223,3 +223,12 @@ REST API Version Control
 + 인터넷 웹브라우저 남은 캐시값을 확인하며 개발(새로운 반영시)
 + 웹브라우저 호환성 확인
 + API 개발 문서 작성
+
+<hr/>
+
+HATEOAS - Hypermedia As the Engine Of Application State
++ 현재 리소스와 연관된(호출 가능한) 자원 상태 정보를 제공
+![img.png](readmeImg/img14.png)
++ HATEOAS를 적용한 Response
+
+![img.png](readmeImg/img15.png)
