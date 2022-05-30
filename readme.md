@@ -259,7 +259,19 @@ spring:
 <hr/>
 Actuator (Spring Boot Monitoring Tool)
 
-+ 어플리케이션을 모니터링 하고 관리하는 기능 (Spring Boot 자체 ㅊ제공)
++ 어플리케이션을 모니터링 하고 관리하는 기능 (Spring Boot 자체 제공)
 
 + SpringFox 라이브러리 문제 관련 해결
   + https://github.com/springfox/springfox/issues/3462#issuecomment-1070387054
+![img_1.png](readmeImg/img_16.png)
+<hr/>
+
+~~HAL Browser~~ (Deprecated) -> HAL Explorer
+
++ Hypertext Application Language
++ API의 리소스들 사이에 쉽고 일관적인 하이퍼링크를 제공하는 방식
++ 메타정보를 하이퍼링크 형식으로 간단하게 표현 가능
+
+
+![img_16.png](readmeImg/img_17.png)
+HATEOS 정보(Links정보) 가 같이 나타나남
