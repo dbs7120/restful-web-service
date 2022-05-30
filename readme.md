@@ -255,3 +255,11 @@ spring:
 
 + Swagger 2.0 접속 주소
   + (http://localhost:8088)/swagger-ui/index.html
+
+<hr/>
+Actuator (Spring Boot Monitoring Tool)
+
++ 어플리케이션을 모니터링 하고 관리하는 기능 (Spring Boot 자체 ㅊ제공)
+
++ SpringFox 라이브러리 문제 관련 해결
+  + https://github.com/springfox/springfox/issues/3462#issuecomment-1070387054
