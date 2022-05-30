@@ -232,3 +232,26 @@ HATEOAS - Hypermedia As the Engine Of Application State
 + HATEOAS를 적용한 Response
 
 ![img.png](readmeImg/img15.png)
+
+<hr/>
+Swagger
+
+```xml
+# SpringBoot 2.6.7 버전 기준 pom.xml dependency 추가
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
+```yaml
+# 2.6버전 이후 ant_apth_matcher 에서 path_pattern_parser 로 변경 되면서 몇 몇 라이브러리에 경로 설정 이 필요함
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+```
+
++ Swagger 2.0 접속 주소
+  + (http://localhost:8088)/swagger-ui/index.html
