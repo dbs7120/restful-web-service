@@ -275,3 +275,34 @@ Actuator (Spring Boot Monitoring Tool)
 
 ![img_16.png](readmeImg/img_17.png)
 HATEOS 정보(Links정보) 가 같이 나타나남
+
+<hr/>
+Spring Security
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+
+
+```
+기본 생성 password (boot 실행시 logger에 나옴)
+![img_1.png](readmeImg/img_18.png)
+
+username / password 변경처리ㅏ
+
+```java
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("kenneth")
+                .password("{noop}test1234")
+                .roles("USER");
+    }
+}
+```
