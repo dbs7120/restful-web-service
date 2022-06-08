@@ -163,7 +163,7 @@ public String helloWorldInternationalized(@RequestHeader(name = "Accept-Language
 XML Format 형식 반환
 
 + Dependency 설정하지 않았을때 XML 요청시 아래와 같이 406 Not Acceptable 이 반환됨
-![img.png](readmeImg/img9.png)
+![img.png](readmeImg/img_9.png)
 
 Dependency 추가시 정상 반환 가능
 ```xml
@@ -173,13 +173,13 @@ Dependency 추가시 정상 반환 가능
     <version>2.13.3</version>
 </dependency>
 ```
-![img.png](readmeImg/img10.png)
+![img.png](readmeImg/img_10.png)
 
 <hr/>
 Response Filtering
 
 + 필터링 X
-![img.png](readmeImg/img11.png)
+![img.png](readmeImg/img_11.png)
  
 + 필드값 단위 : @JsonIgnore
 
@@ -205,7 +205,7 @@ public class User {
   private String ssn;
 }
 ```
-![img.png](readmeImg/img12.png)
+![img.png](readmeImg/img_12.png)
 
 <hr/>
 REST API Version Control
@@ -216,7 +216,7 @@ REST API Version Control
 @GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1") // request header를 활용한 버전 관리
 @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json") // produces 를 활용한 방법 (MIME 타입 (Multipurpose Internet Mail Extensions))
 ```
-![img.png](readmeImg/img13.png)
+![img.png](readmeImg/img_13.png)
 
 + URI 값이 지저분하거나 과도한 정보를 주는지 주의
 + 잘못된 헤더값을 주는지 확인
@@ -228,10 +228,10 @@ REST API Version Control
 
 HATEOAS - Hypermedia As the Engine Of Application State
 + 현재 리소스와 연관된(호출 가능한) 자원 상태 정보를 제공
-![img.png](readmeImg/img14.png)
+![img.png](readmeImg/img_14.png)
 + HATEOAS를 적용한 Response
 
-![img.png](readmeImg/img15.png)
+![img.png](readmeImg/img_15.png)
 
 <hr/>
 Swagger
@@ -291,7 +291,7 @@ Spring Security
 기본 생성 password (boot 실행시 logger에 나옴)
 ![img_1.png](readmeImg/img_18.png)
 
-username / password 변경처리ㅏ
+username / password 변경처리
 
 ```java
 @Configuration
@@ -306,3 +306,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+
+<hr/>
+
+![img.png](readmeImg/img_19.png)<br/>
+JPA
++ Java Persistence API
++ 자바 ORM 기술에 대한 API 표준 명세
++ 자바 어플리케이션에서 관계형 데이터베이스를 사용하는 방식을 정의한 인터페이스
++ EntityManager를 통해 CRUD 처리
+
+Hibernate
++ EJB를 대체하기위해 나온 ORM 프레임워크
++ JPA의 구현체, 인터페이스를 직접 구현한 라이브러리
++ 생산성, 유지보수, 비종속성
+
+Spring Data JPA
++ Spring Module
++ JPA를 추상화한 Repository 인터페이스 제공
+
+==> 보다 적은량의 코드를 통해 데이터베이스를 연동한 프로그램 개발 가능3
+
+H2 Database
++ 자바기반의 오픈소스 관계형 DB
++ 인메모리 DB 기능 지원
+![img.png](readmeImg/img_20.png)
+![img_1.png](readmeImg/img_21.png)
+
+```java
+@Entity
+public class User {
+
+  @Id
+  @GeneratedValue
+  private Integer id;
+  ...
+}
+```
+
+![img.png](readmeImg/img_22.png)
+
+
++ 스프링 부트 시작 시점 insert 문 실행 (resources > data.sql)
+(https://www.inflearn.com/questions/260596)
+![img.png](readmeImg/img_23.png)
+![img.png](readmeImg/img_24.png)
