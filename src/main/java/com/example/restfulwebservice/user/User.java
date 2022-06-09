@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 //@JsonIgnoreProperties(value = {"password", "ssn"}) // 클래스 단위 Json 필터 (response 데이터에서 제외됨)
 @NoArgsConstructor
-@JsonFilter("UserInfo")
+//@JsonFilter("UserInfo")
 @ApiModel(description = "사용자 상세 정보를 위한 도메인 객체")
 @Entity
 public class User {

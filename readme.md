@@ -329,7 +329,7 @@ Spring Data JPA
 
 H2 Database
 + 자바기반의 오픈소스 관계형 DB
-+ 인메모리 DB 기능 지원
++ 인메모리 DB 기능 지원 <br/>
 ![img.png](readmeImg/img_20.png)
 ![img_1.png](readmeImg/img_21.png)
 
